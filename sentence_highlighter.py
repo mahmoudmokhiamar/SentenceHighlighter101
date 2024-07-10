@@ -49,19 +49,70 @@ class sentenceHighlighter(object):
     #convert the rgb values to hex values. Since html uses hex values to represent colors.
     def rgb_to_hex(self,rgb):
         return '#%02x%02x%02x' % tuple(int(c * 255) for c in rgb)
+    
+    ##############################################################################################################
+    # def generate_html(self, output_file='highlighted_sentences2.html'):                                                  
+    #     html_output = '<html><body>'
+    #     for i, sentence in enumerate(self.sentences):
+    #         color = self.rgb_to_hex(self.color_map.get(i, (1, 1, 1)))  # Default to white if not found
+    #         html_output += f'<span style="background-color: {color}">{sentence}</span> '
+    #     html_output += '</body></html>'
+    #     html_output = html_output.replace('</span> ', '</span><br>')
+    #     with open(output_file, 'w', encoding='utf-8') as file:
+    #         file.write(html_output)
+    #     print(f'HTML file generated: {output_file}')
+    ##############################################################################################################
 
-
-    def generate_html(self, output_file='highlighted_sentences2.html'):
-        html_output = '<html><body>'
+    #for the none-styled version comment this code and uncomment the above code.
+    def generate_html(self, output_file='highlighted_sentences.html'):
+        static_html = f'''
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Sentence Highlighter</title>
+            <style>
+                body {{
+                    font-family: 'Arial', sans-serif;
+                }}
+                .highlight {{
+                    font-size: 1.5em;  /* Adjusted size for the highlight class */
+                    color: #00ff00; /* bright green */
+                }}
+                h1 {{
+                    text-align: center;
+                }}
+                .highlighted-sentences {{
+                    font-family: monospace;
+                    font-size: 18px;
+                }}
+            </style>
+        </head>
+        <body>
+            <h1>Welcome to <span class="highlight">Sentence Highlighter!</span></h1>
+            <div class="highlighted-sentences">
+        '''
+        
+        dynamic_html = ''
         for i, sentence in enumerate(self.sentences):
             color = self.rgb_to_hex(self.color_map.get(i, (1, 1, 1)))  # Default to white if not found
-            html_output += f'<span style="background-color: {color}">{sentence}</span> '
-        html_output += '</body></html>'
-        html_output = html_output.replace('</span> ', '</span><br>')
+            dynamic_html += f'<span style="background-color: {color}" style="text-align:left;">{sentence}</span><br>'
+
+        # Close the HTML structure
+        closing_html = '''
+            </div>
+        </body>
+        </html>
+        '''
+
+        html_output = static_html + dynamic_html + closing_html
+
+        
         with open(output_file, 'w', encoding='utf-8') as file:
             file.write(html_output)
-        print(f'HTML file generated: {output_file}')
 
+        print(f'HTML file generated: {output_file}')
 
 
 sentenceHighlighter = sentenceHighlighter()
